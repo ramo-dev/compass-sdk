@@ -93,6 +93,8 @@ to allow your site’s CORS origin.
 | --- | --- | --- |
 | `baseUrl` | Required | API root; the SDK appends `/v1/...`. |
 | `apiKey` | None | Optional bearer token. |
+| `org` | None | Organization slug; set with `project` for project-scoped requests. |
+| `project` | None | Project slug; set with `org` for project-scoped requests. |
 | `timeoutMs` | `15000` | Timeout per request attempt. |
 | `retries` | `2` | Retries for transient read failures. |
 | `retryDelayMs` | `250` | Base delay in milliseconds; grows exponentially. |
@@ -148,8 +150,8 @@ try {
 
 ## Package size
 
-Version `0.1.0` has no runtime dependencies and ships as a **21.1 kB packed npm
-tarball** (**69.9 kB unpacked**). The required `@compasscms/contracts@0.1.0`
+Version `0.2.0` has no runtime dependencies and ships as a **21.1 kB packed npm
+tarball** (**69.9 kB unpacked**). The required `@compasscms/contracts@0.2.0`
 package adds **17.6 kB packed** (**60.0 kB unpacked**). These sizes include
 documentation and license files and may change between releases.
 

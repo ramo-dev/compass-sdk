@@ -3,10 +3,30 @@ import { type APIErrorBody, CompassError } from "./errors.js";
 export interface RequesterOptions {
 	baseUrl: string;
 	apiKey?: string;
+	/** Organization slug for project-scoped requests. Combined with `project`. */
+	org?: string;
+	/** Project slug for project-scoped requests. Combined with `org`. */
+	project?: string;
 	fetch?: typeof globalThis.fetch;
 	timeoutMs?: number;
 	retries?: number;
 	retryDelayMs?: number;
+}
+
+/**
+ * Rewrites a `/v1/...` path to its project-scoped form
+ * (`/v1/orgs/{org}/projects/{project}/...`) when both `org` and `project` are
+ * configured. Left untouched otherwise, so the default deployment routes keep
+ * working unchanged. Query strings are preserved.
+ */
+function scopePath(options: RequesterOptions, path: string): string {
+	const { org, project } = options;
+	if (!org || !project) return path;
+	const normalized = path.replace(/^\//, "");
+	if (normalized !== "v1" && !normalized.startsWith("v1/")) return path;
+	const remainder = normalized.slice("v1/".length);
+	const prefix = `v1/orgs/${encodeURIComponent(org)}/projects/${encodeURIComponent(project)}/`;
+	return `${prefix}${remainder}`;
 }
 
 export async function request<T>(
@@ -29,7 +49,7 @@ export async function request<T>(
 		const timeout = setTimeout(() => controller.abort(), options.timeoutMs ?? 15_000);
 		try {
 			const response = await fetcher(
-				`${options.baseUrl.replace(/\/$/, "")}/${path.replace(/^\//, "")}`,
+				`${options.baseUrl.replace(/\/$/, "")}/${scopePath(options, path).replace(/^\//, "")}`,
 				{ ...init, headers, signal: controller.signal },
 			);
 			if (response.ok) {

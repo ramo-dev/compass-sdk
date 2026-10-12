@@ -9,6 +9,10 @@ import type { Author, Category, Tag } from "./types.js";
 export interface CompassOptions {
 	baseUrl: string;
 	apiKey?: string;
+	/** Organization slug. Set together with `project` for project-scoped requests. */
+	org?: string;
+	/** Project slug. Set together with `org` for project-scoped requests. */
+	project?: string;
 	timeoutMs?: number;
 	retries?: number;
 	retryDelayMs?: number;

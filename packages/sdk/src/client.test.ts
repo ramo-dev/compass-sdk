@@ -39,6 +39,38 @@ describe("Compass", () => {
 		assert.equal(page.items[0]?.title, "Hello");
 	});
 
+	it("prefixes requests with the project-scoped base when org and project are set", async () => {
+		const compass = new Compass({
+			baseUrl: "https://cms.example.com/api",
+			org: "Acme Co",
+			project: "docs/site",
+			retries: 0,
+			fetch: async (input) => {
+				assert.equal(
+					String(input),
+					"https://cms.example.com/api/v1/orgs/Acme%20Co/projects/docs%2Fsite/collections/guides/entries/getting-started",
+				);
+				return json({ id: "1", slug: "getting-started", title: "Hello", status: "published" });
+			},
+		});
+
+		const entry = await compass.collection("guides").getEntry("getting-started");
+		assert.equal(entry.title, "Hello");
+	});
+
+	it("keeps the default /v1 paths when org and project are unset", async () => {
+		const compass = new Compass({
+			baseUrl: "https://cms.example.com",
+			retries: 0,
+			fetch: async (input) => {
+				assert.equal(String(input), "https://cms.example.com/v1/authors?page=1");
+				return json({ items: [], total: 0, page: 1, pageSize: 20, pageCount: 0 });
+			},
+		});
+
+		await compass.authors.list({ page: 1 });
+	});
+
 	it("exposes typed API errors", async () => {
 		const compass = new Compass({
 			baseUrl: "https://cms.example.com",

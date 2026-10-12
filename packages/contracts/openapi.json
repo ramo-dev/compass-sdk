@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Compass Content API",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Framework-neutral public content and media API for Compass."
   },
   "servers": [{ "url": "https://cms.example.com/api" }],
@@ -71,11 +71,78 @@
       "get": { "operationId": "getCollectionEntry", "responses": { "200": { "$ref": "#/components/responses/EntryResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } },
       "patch": { "operationId": "updateCollectionEntry", "requestBody": { "$ref": "#/components/requestBodies/PostInput" }, "responses": { "200": { "$ref": "#/components/responses/EntryResponse" } } },
       "delete": { "operationId": "deleteCollectionEntry", "responses": { "204": { "description": "Entry deleted" } } }
+    },
+    "/v1/orgs/{org}/projects/{project}/posts": {
+      "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }],
+      "get": {
+        "operationId": "listProjectPosts",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/Search" },
+          { "$ref": "#/components/parameters/Status" },
+          { "$ref": "#/components/parameters/Category" },
+          { "$ref": "#/components/parameters/Tags" }
+        ],
+        "responses": { "200": { "$ref": "#/components/responses/PostPage" } }
+      },
+      "post": {
+        "operationId": "createProjectPost",
+        "requestBody": { "$ref": "#/components/requestBodies/PostInput" },
+        "responses": { "201": { "$ref": "#/components/responses/PostResponse" } }
+      }
+    },
+    "/v1/orgs/{org}/projects/{project}/posts/{idOrSlug}": {
+      "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }, { "$ref": "#/components/parameters/IdOrSlug" }],
+      "get": {
+        "operationId": "getProjectPost",
+        "responses": { "200": { "$ref": "#/components/responses/PostResponse" }, "404": { "$ref": "#/components/responses/NotFound" } }
+      },
+      "patch": {
+        "operationId": "updateProjectPost",
+        "requestBody": { "$ref": "#/components/requestBodies/PostInput" },
+        "responses": { "200": { "$ref": "#/components/responses/PostResponse" } }
+      },
+      "delete": {
+        "operationId": "deleteProjectPost",
+        "responses": { "204": { "description": "Post deleted" } }
+      }
+    },
+    "/v1/orgs/{org}/projects/{project}/authors": { "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }], "get": { "operationId": "listProjectAuthors", "parameters": [{ "$ref": "#/components/parameters/Page" }, { "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Search" }], "responses": { "200": { "$ref": "#/components/responses/AuthorPage" } } } },
+    "/v1/orgs/{org}/projects/{project}/authors/{idOrSlug}": { "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }], "get": { "operationId": "getProjectAuthor", "parameters": [{ "$ref": "#/components/parameters/IdOrSlug" }], "responses": { "200": { "$ref": "#/components/responses/AuthorResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } } },
+    "/v1/orgs/{org}/projects/{project}/categories": { "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }], "get": { "operationId": "listProjectCategories", "parameters": [{ "$ref": "#/components/parameters/Page" }, { "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Search" }], "responses": { "200": { "$ref": "#/components/responses/CategoryPage" } } } },
+    "/v1/orgs/{org}/projects/{project}/categories/{idOrSlug}": { "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }], "get": { "operationId": "getProjectCategory", "parameters": [{ "$ref": "#/components/parameters/IdOrSlug" }], "responses": { "200": { "$ref": "#/components/responses/CategoryResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } } },
+    "/v1/orgs/{org}/projects/{project}/tags": { "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }], "get": { "operationId": "listProjectTags", "parameters": [{ "$ref": "#/components/parameters/Page" }, { "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Search" }], "responses": { "200": { "$ref": "#/components/responses/TagPage" } } } },
+    "/v1/orgs/{org}/projects/{project}/tags/{idOrSlug}": { "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }], "get": { "operationId": "getProjectTag", "parameters": [{ "$ref": "#/components/parameters/IdOrSlug" }], "responses": { "200": { "$ref": "#/components/responses/TagResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } } },
+    "/v1/orgs/{org}/projects/{project}/media": { "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }], "get": { "operationId": "listProjectMedia", "parameters": [{ "$ref": "#/components/parameters/Page" }, { "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Search" }, { "$ref": "#/components/parameters/Folder" }, { "$ref": "#/components/parameters/MimeType" }], "responses": { "200": { "$ref": "#/components/responses/MediaPage" } } } },
+    "/v1/orgs/{org}/projects/{project}/media/{id}": {
+      "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }, { "$ref": "#/components/parameters/MediaId" }],
+      "get": { "operationId": "getProjectMedia", "responses": { "200": { "$ref": "#/components/responses/MediaResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } },
+      "delete": { "operationId": "deleteProjectMedia", "responses": { "204": { "description": "Media deleted" } } }
+    },
+    "/v1/orgs/{org}/projects/{project}/collections": { "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }], "get": { "operationId": "listProjectCollections", "responses": { "200": { "$ref": "#/components/responses/CollectionPage" } } } },
+    "/v1/orgs/{org}/projects/{project}/collections/{collection}": { "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }], "get": { "operationId": "getProjectCollection", "parameters": [{ "$ref": "#/components/parameters/Collection" }], "responses": { "200": { "$ref": "#/components/responses/CollectionResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } } },
+    "/v1/orgs/{org}/projects/{project}/collections/{collection}/entries": {
+      "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }, { "$ref": "#/components/parameters/Collection" }],
+      "get": {
+        "operationId": "listProjectCollectionEntries",
+        "parameters": [{ "$ref": "#/components/parameters/Page" }, { "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Search" }, { "$ref": "#/components/parameters/Status" }, { "$ref": "#/components/parameters/Category" }, { "$ref": "#/components/parameters/Tags" }],
+        "responses": { "200": { "$ref": "#/components/responses/EntryPage" } }
+      },
+      "post": { "operationId": "createProjectCollectionEntry", "requestBody": { "$ref": "#/components/requestBodies/PostInput" }, "responses": { "201": { "$ref": "#/components/responses/EntryResponse" } } }
+    },
+    "/v1/orgs/{org}/projects/{project}/collections/{collection}/entries/{idOrSlug}": {
+      "parameters": [{ "$ref": "#/components/parameters/Org" }, { "$ref": "#/components/parameters/Project" }, { "$ref": "#/components/parameters/Collection" }, { "$ref": "#/components/parameters/IdOrSlug" }],
+      "get": { "operationId": "getProjectCollectionEntry", "responses": { "200": { "$ref": "#/components/responses/EntryResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } },
+      "patch": { "operationId": "updateProjectCollectionEntry", "requestBody": { "$ref": "#/components/requestBodies/PostInput" }, "responses": { "200": { "$ref": "#/components/responses/EntryResponse" } } },
+      "delete": { "operationId": "deleteProjectCollectionEntry", "responses": { "204": { "description": "Entry deleted" } } }
     }
   },
   "components": {
     "securitySchemes": { "apiKey": { "type": "http", "scheme": "bearer", "description": "Public read-only or private scoped API key." } },
     "parameters": {
+      "Org": { "name": "org", "in": "path", "required": true, "schema": { "type": "string" }, "description": "Globally unique organization slug." },
+      "Project": { "name": "project", "in": "path", "required": true, "schema": { "type": "string" }, "description": "Project slug, unique within the organization." },
       "Collection": { "name": "collection", "in": "path", "required": true, "schema": { "type": "string" } },
       "IdOrSlug": { "name": "idOrSlug", "in": "path", "required": true, "schema": { "type": "string" } },
       "MediaId": { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },

@@ -116,6 +116,8 @@ browser requests also require the CMS API to allow your site’s CORS origin.
 | --- | --- | --- |
 | `baseUrl` | Required | API root; the SDK appends `/v1/...` paths. |
 | `apiKey` | None | Optional bearer token. |
+| `org` | None | Organization slug; set with `project` for project-scoped requests. |
+| `project` | None | Project slug; set with `org` for project-scoped requests. |
 | `timeoutMs` | `15000` | Timeout for each request attempt. |
 | `retries` | `2` | Number of retries for reads after transient failures. |
 | `retryDelayMs` | `250` | Base retry delay in milliseconds; delays grow exponentially. |
@@ -182,9 +184,9 @@ client and the CMS backend; the SDK does not include or deploy the backend.
 
 ## Small install footprint
 
-`@compasscms/sdk@0.1.0` has no runtime dependencies and ships as a **21.1 kB
+`@compasscms/sdk@0.2.0` has no runtime dependencies and ships as a **21.1 kB
 packed npm tarball** (**69.9 kB unpacked**). The required
-`@compasscms/contracts@0.1.0` package adds **17.6 kB packed** (**60.0 kB
+`@compasscms/contracts@0.2.0` package adds **17.6 kB packed** (**60.0 kB
 unpacked**). Measurements include documentation and license files and can
 change between releases.
 

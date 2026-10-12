@@ -1,6 +1,6 @@
 {
 	"name": "@compasscms/sdk",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"private": false,
 	"author": "ramo-dev",
 	"repository": {
@@ -30,7 +30,7 @@
 		"prepack": "pnpm --filter @compasscms/contracts build && pnpm build"
 	},
 	"peerDependencies": {
-		"@compasscms/contracts": "^0.1.0"
+		"@compasscms/contracts": "^0.2.0"
 	},
 	"devDependencies": {
 		"@compasscms/contracts": "workspace:*",

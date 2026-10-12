@@ -12,6 +12,24 @@ https://cms.example.com/api
 The SDK appends versioned paths such as `/v1/posts` to this base URL. If a
 backend serves `/v1` at its host root, use that root as `baseUrl` instead.
 
+## Project-scoped base
+
+Every resource above is also served under a project-scoped base:
+
+```text
+/v1/orgs/{org}/projects/{project}/...
+```
+
+Organization slugs are globally unique. Project slugs are unique within an
+organization, so `{org}` and `{project}` together identify a project. API keys
+are pinned to a single project; a request under this base must resolve to the
+project the key belongs to. Requests to the unprefixed `/v1/...` paths use the
+deployment's default project.
+
+The SDK emits this base when both `org` and `project` are set on the client
+(e.g. `new Compass({ ..., org: "acme", project: "website" })`). Each path
+segment is URL-encoded.
+
 ## Authentication
 
 Send the API key in the `Authorization` header:
