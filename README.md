@@ -190,30 +190,9 @@ change between releases.
 
 ## Agent skill
 
-This repository includes a reusable [`compasscms-sdk` skill](skills/compasscms-sdk/SKILL.md)
-with agent instructions for installing and integrating the SDK, using its
-resources, handling credentials, and following the API contract.
-
-Install it into the current project for supported agents with the
-[Skills CLI](https://www.skills.sh/docs):
-
-```sh
-npx skills add ramo-dev/compasscms-sdk --skill compasscms-sdk
-```
-
-Add `--global` to install it for your user instead of the current project. To
-refresh an existing installation, run `npx skills update compasscms-sdk`.
-
-### Publish and discover the skill
-
-Skills are distributed from public GitHub repositories; there is no separate
-npm publish step. Keep the `SKILL.md` in the repository, commit and push it to
-GitHub, and users can install it with `npx skills add`. Skills.sh adds skills to
-its leaderboard through anonymous installation telemetry. Users can opt out
-with `DISABLE_TELEMETRY=1` or `DO_NOT_TRACK=1`.
-
-See the [Skills CLI documentation](https://www.skills.sh/docs/cli) for supported
-agents, installation options, and skill discovery details.
+Agent guidance for using the SDK lives in the open
+[Agent Skills for Cracked Devs and Designers](https://github.com/ramo-dev/skills)
+collection.
 
 ## Development
 
