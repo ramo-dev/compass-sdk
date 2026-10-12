@@ -1,0 +1,15 @@
+{
+	"name": "compass-sdk-workspace",
+	"version": "0.1.0",
+	"private": true,
+	"license": "AGPL-3.0-only",
+	"packageManager": "pnpm@10.33.2",
+	"scripts": {
+		"build": "pnpm --filter @compasscms/contracts build && pnpm --filter @compasscms/sdk build",
+		"test": "pnpm --filter @compasscms/sdk test",
+		"check": "pnpm build && pnpm exec biome check packages/sdk/src packages/contracts/src"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.5.15"
+	}
+}

@@ -1,0 +1,151 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Compass Content API",
+    "version": "0.1.0",
+    "description": "Framework-neutral public content and media API for Compass."
+  },
+  "servers": [{ "url": "https://cms.example.com/api" }],
+  "security": [{ "apiKey": [] }],
+  "paths": {
+    "/v1/posts": {
+      "get": {
+        "operationId": "listPosts",
+        "parameters": [
+          { "$ref": "#/components/parameters/Page" },
+          { "$ref": "#/components/parameters/PageSize" },
+          { "$ref": "#/components/parameters/Search" },
+          { "$ref": "#/components/parameters/Status" },
+          { "$ref": "#/components/parameters/Category" },
+          { "$ref": "#/components/parameters/Tags" }
+        ],
+        "responses": { "200": { "$ref": "#/components/responses/PostPage" } }
+      },
+      "post": {
+        "operationId": "createPost",
+        "requestBody": { "$ref": "#/components/requestBodies/PostInput" },
+        "responses": { "201": { "$ref": "#/components/responses/PostResponse" } }
+      }
+    },
+    "/v1/posts/{idOrSlug}": {
+      "parameters": [{ "$ref": "#/components/parameters/IdOrSlug" }],
+      "get": {
+        "operationId": "getPost",
+        "responses": { "200": { "$ref": "#/components/responses/PostResponse" }, "404": { "$ref": "#/components/responses/NotFound" } }
+      },
+      "patch": {
+        "operationId": "updatePost",
+        "requestBody": { "$ref": "#/components/requestBodies/PostInput" },
+        "responses": { "200": { "$ref": "#/components/responses/PostResponse" } }
+      },
+      "delete": {
+        "operationId": "deletePost",
+        "responses": { "204": { "description": "Post deleted" } }
+      }
+    },
+    "/v1/authors": { "get": { "operationId": "listAuthors", "parameters": [{ "$ref": "#/components/parameters/Page" }, { "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Search" }], "responses": { "200": { "$ref": "#/components/responses/AuthorPage" } } } },
+    "/v1/authors/{idOrSlug}": { "get": { "operationId": "getAuthor", "parameters": [{ "$ref": "#/components/parameters/IdOrSlug" }], "responses": { "200": { "$ref": "#/components/responses/AuthorResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } } },
+    "/v1/categories": { "get": { "operationId": "listCategories", "parameters": [{ "$ref": "#/components/parameters/Page" }, { "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Search" }], "responses": { "200": { "$ref": "#/components/responses/CategoryPage" } } } },
+    "/v1/categories/{idOrSlug}": { "get": { "operationId": "getCategory", "parameters": [{ "$ref": "#/components/parameters/IdOrSlug" }], "responses": { "200": { "$ref": "#/components/responses/CategoryResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } } },
+    "/v1/tags": { "get": { "operationId": "listTags", "parameters": [{ "$ref": "#/components/parameters/Page" }, { "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Search" }], "responses": { "200": { "$ref": "#/components/responses/TagPage" } } } },
+    "/v1/tags/{idOrSlug}": { "get": { "operationId": "getTag", "parameters": [{ "$ref": "#/components/parameters/IdOrSlug" }], "responses": { "200": { "$ref": "#/components/responses/TagResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } } },
+    "/v1/media": { "get": { "operationId": "listMedia", "parameters": [{ "$ref": "#/components/parameters/Page" }, { "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Search" }, { "$ref": "#/components/parameters/Folder" }, { "$ref": "#/components/parameters/MimeType" }], "responses": { "200": { "$ref": "#/components/responses/MediaPage" } } } },
+    "/v1/media/{id}": {
+      "parameters": [{ "$ref": "#/components/parameters/MediaId" }],
+      "get": { "operationId": "getMedia", "responses": { "200": { "$ref": "#/components/responses/MediaResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } },
+      "delete": { "operationId": "deleteMedia", "responses": { "204": { "description": "Media deleted" } } }
+    },
+    "/v1/collections": { "get": { "operationId": "listCollections", "responses": { "200": { "$ref": "#/components/responses/CollectionPage" } } } },
+    "/v1/collections/{collection}": { "get": { "operationId": "getCollection", "parameters": [{ "$ref": "#/components/parameters/Collection" }], "responses": { "200": { "$ref": "#/components/responses/CollectionResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } } },
+    "/v1/collections/{collection}/entries": {
+      "parameters": [{ "$ref": "#/components/parameters/Collection" }],
+      "get": {
+        "operationId": "listCollectionEntries",
+        "parameters": [{ "$ref": "#/components/parameters/Page" }, { "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Search" }, { "$ref": "#/components/parameters/Status" }, { "$ref": "#/components/parameters/Category" }, { "$ref": "#/components/parameters/Tags" }],
+        "responses": { "200": { "$ref": "#/components/responses/EntryPage" } }
+      },
+      "post": { "operationId": "createCollectionEntry", "requestBody": { "$ref": "#/components/requestBodies/PostInput" }, "responses": { "201": { "$ref": "#/components/responses/EntryResponse" } } }
+    },
+    "/v1/collections/{collection}/entries/{idOrSlug}": {
+      "parameters": [{ "$ref": "#/components/parameters/Collection" }, { "$ref": "#/components/parameters/IdOrSlug" }],
+      "get": { "operationId": "getCollectionEntry", "responses": { "200": { "$ref": "#/components/responses/EntryResponse" }, "404": { "$ref": "#/components/responses/NotFound" } } },
+      "patch": { "operationId": "updateCollectionEntry", "requestBody": { "$ref": "#/components/requestBodies/PostInput" }, "responses": { "200": { "$ref": "#/components/responses/EntryResponse" } } },
+      "delete": { "operationId": "deleteCollectionEntry", "responses": { "204": { "description": "Entry deleted" } } }
+    }
+  },
+  "components": {
+    "securitySchemes": { "apiKey": { "type": "http", "scheme": "bearer", "description": "Public read-only or private scoped API key." } },
+    "parameters": {
+      "Collection": { "name": "collection", "in": "path", "required": true, "schema": { "type": "string" } },
+      "IdOrSlug": { "name": "idOrSlug", "in": "path", "required": true, "schema": { "type": "string" } },
+      "MediaId": { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } },
+      "Page": { "name": "page", "in": "query", "schema": { "type": "integer", "minimum": 1, "default": 1 } },
+      "PageSize": { "name": "pageSize", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 20 } },
+      "Search": { "name": "search", "in": "query", "schema": { "type": "string" } },
+      "Status": { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["published", "draft", "scheduled", "archived", "all"], "default": "published" } },
+      "Category": { "name": "category", "in": "query", "schema": { "type": "string" } },
+      "Tags": { "name": "tags", "in": "query", "style": "form", "explode": true, "schema": { "type": "array", "items": { "type": "string" } } },
+      "Folder": { "name": "folder", "in": "query", "schema": { "type": "string" } },
+      "MimeType": { "name": "mimeType", "in": "query", "schema": { "type": "string" } }
+    },
+    "schemas": {
+      "Page": { "type": "object", "required": ["items", "total", "page", "pageSize", "pageCount"], "properties": { "items": { "type": "array", "items": {} }, "total": { "type": "integer" }, "page": { "type": "integer" }, "pageSize": { "type": "integer" }, "pageCount": { "type": "integer" } } },
+      "JSONValue": { "oneOf": [ { "type": ["string", "number", "boolean", "null"] }, { "type": "array", "items": { "$ref": "#/components/schemas/JSONValue" } }, { "type": "object", "additionalProperties": { "$ref": "#/components/schemas/JSONValue" } } ] },
+      "ContentStatus": { "type": "string", "enum": ["draft", "published", "scheduled", "archived"] },
+      "FieldType": { "type": "string", "enum": ["text", "textarea", "richtext", "markdown", "number", "boolean", "date", "datetime", "url", "email", "color", "select", "multiselect", "image", "file", "video", "audio", "tags", "relation", "json"] },
+      "FieldGroup": { "type": "string", "enum": ["content", "meta", "seo"] },
+      "FieldOption": { "type": "object", "required": ["value", "label"], "properties": { "value": { "type": "string" }, "label": { "type": "string" } } },
+      "FieldDefinition": {
+        "type": "object",
+        "required": ["key", "label", "type"],
+        "properties": {
+          "key": { "type": "string" },
+          "label": { "type": "string" },
+          "type": { "$ref": "#/components/schemas/FieldType" },
+          "helpText": { "type": "string" },
+          "placeholder": { "type": "string" },
+          "required": { "type": "boolean" },
+          "defaultValue": { "$ref": "#/components/schemas/JSONValue" },
+          "options": { "type": "array", "items": { "$ref": "#/components/schemas/FieldOption" } },
+          "relationTo": { "type": "string", "description": "Target collection ID for relation fields." },
+          "inTable": { "type": "boolean" },
+          "searchable": { "type": "boolean" },
+          "private": { "type": "boolean" },
+          "maxLength": { "type": "integer", "minimum": 0 },
+          "min": { "type": "number" },
+          "max": { "type": "number" },
+          "step": { "type": "number", "exclusiveMinimum": 0 },
+          "group": { "$ref": "#/components/schemas/FieldGroup" },
+          "order": { "type": "integer" },
+          "localized": { "type": "boolean" }
+        }
+      },
+      "Post": { "type": "object", "required": ["id", "slug", "title", "status"], "properties": { "id": { "type": "string" }, "collectionId": { "type": "string" }, "slug": { "type": "string" }, "title": { "type": "string" }, "description": { "type": "string" }, "content": { "type": "string" }, "status": { "$ref": "#/components/schemas/ContentStatus" }, "coverImage": { "type": ["string", "null"] }, "publishedAt": { "type": ["string", "null"], "format": "date-time" }, "updatedAt": { "type": "string", "format": "date-time" }, "fields": { "type": "object", "additionalProperties": { "$ref": "#/components/schemas/JSONValue" } } } },
+      "Collection": { "type": "object", "required": ["id", "name", "singular", "fields", "publishable"], "properties": { "id": { "type": "string" }, "name": { "type": "string" }, "singular": { "type": "string" }, "description": { "type": "string" }, "fields": { "type": "array", "items": { "$ref": "#/components/schemas/FieldDefinition" } }, "publishable": { "type": "boolean" } } },
+      "NamedResource": { "type": "object", "required": ["id", "slug", "name"], "properties": { "id": { "type": "string" }, "slug": { "type": "string" }, "name": { "type": "string" }, "description": { "type": "string" } } },
+      "MediaAsset": { "type": "object", "required": ["id", "name", "url"], "properties": { "id": { "type": "string" }, "name": { "type": "string" }, "url": { "type": "string", "format": "uri" }, "mimeType": { "type": "string" }, "size": { "type": "integer" }, "width": { "type": "integer" }, "height": { "type": "integer" }, "alt": { "type": "string" } } },
+      "PostInput": { "type": "object", "required": ["title"], "properties": { "title": { "type": "string" }, "slug": { "type": "string" }, "description": { "type": "string" }, "content": { "type": "string" }, "status": { "$ref": "#/components/schemas/ContentStatus" }, "coverImage": { "type": ["string", "null"] }, "fields": { "type": "object", "additionalProperties": { "$ref": "#/components/schemas/JSONValue" } } } },
+      "Error": { "type": "object", "properties": { "error": { "type": "string" }, "code": { "type": "string" }, "details": {} } }
+    },
+    "requestBodies": {
+      "PostInput": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PostInput" } } } }
+    },
+    "responses": {
+      "PostPage": { "description": "Paginated posts", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Page" } } } },
+      "EntryPage": { "description": "Paginated collection entries", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Page" } } } },
+      "CollectionPage": { "description": "Paginated collections", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Page" } } } },
+      "AuthorPage": { "description": "Paginated authors", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Page" } } } },
+      "CategoryPage": { "description": "Paginated categories", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Page" } } } },
+      "TagPage": { "description": "Paginated tags", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Page" } } } },
+      "MediaPage": { "description": "Paginated media assets", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Page" } } } },
+      "PostResponse": { "description": "A post", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Post" } } } },
+      "EntryResponse": { "description": "A collection entry", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Post" } } } },
+      "CollectionResponse": { "description": "A collection schema", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Collection" } } } },
+      "AuthorResponse": { "description": "An author", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NamedResource" } } } },
+      "CategoryResponse": { "description": "A category", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NamedResource" } } } },
+      "TagResponse": { "description": "A tag", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NamedResource" } } } },
+      "MediaResponse": { "description": "A media asset", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MediaAsset" } } } },
+      "NotFound": { "description": "Resource not found", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+    }
+  }
+}

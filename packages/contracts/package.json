@@ -1,0 +1,30 @@
+{
+	"name": "@compasscms/contracts",
+	"version": "0.1.0",
+	"private": false,
+	"author": "ramo-dev",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ramo-dev/compasscms-sdk.git",
+		"directory": "packages/contracts"
+	},
+	"license": "AGPL-3.0-only",
+	"description": "Shared TypeScript contracts and OpenAPI specification for Compass CMS.",
+	"type": "module",
+	"files": ["dist", "openapi.json", "API-CONTRACT.md", "README.md", "LICENSE"],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./openapi.json": "./openapi.json"
+	},
+	"types": "./dist/index.d.ts",
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"prepack": "pnpm build"
+	},
+	"devDependencies": {
+		"typescript": "^5.0.0"
+	}
+}

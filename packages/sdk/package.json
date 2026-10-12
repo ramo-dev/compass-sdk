@@ -1,0 +1,41 @@
+{
+	"name": "@compasscms/sdk",
+	"version": "0.1.0",
+	"private": false,
+	"author": "ramo-dev",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ramo-dev/compasscms-sdk.git",
+		"directory": "packages/sdk"
+	},
+	"license": "AGPL-3.0-only",
+	"description": "Framework-neutral TypeScript SDK for the Compass CMS API.",
+	"type": "module",
+	"files": ["dist", "README.md", "LICENSE"],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"types": "./dist/index.d.ts",
+	"main": "./dist/index.js",
+	"sideEffects": false,
+	"engines": {
+		"node": ">=18"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"test": "tsx --test src/client.test.ts",
+		"prepack": "pnpm --filter @compasscms/contracts build && pnpm build"
+	},
+	"peerDependencies": {
+		"@compasscms/contracts": "^0.1.0"
+	},
+	"devDependencies": {
+		"@compasscms/contracts": "workspace:*",
+		"@types/node": "^20",
+		"tsx": "^4.23.15",
+		"typescript": "^5.0.0"
+	}
+}
