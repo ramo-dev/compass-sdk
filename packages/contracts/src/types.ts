@@ -9,6 +9,25 @@ export type JSONValue =
 
 export type ContentStatus = "draft" | "published" | "scheduled" | "archived";
 
+/** Which content shape a post carries: writing, images, or both. */
+export type PostKind = "prose" | "gallery" | "mixed";
+
+/** One image inside a post's gallery. */
+export interface GalleryImage {
+	key?: string;
+	url: string;
+	width?: number;
+	height?: number;
+	alt?: string;
+	caption?: string;
+	/** Horizontal focal point as a 0–100 percentage. */
+	focalX?: number;
+	/** Vertical focal point as a 0–100 percentage. */
+	focalY?: number;
+	/** Marks the image that represents the gallery (card/OG cover). */
+	cover?: boolean;
+}
+
 export type FieldType =
 	| "text"
 	| "textarea"
@@ -72,12 +91,15 @@ export interface Collection {
 
 export interface Post {
 	id: string;
+	collectionId?: string;
 	slug: string;
 	title: string;
 	description?: string;
 	content?: string;
 	status: ContentStatus;
 	coverImage?: string | null;
+	images?: GalleryImage[];
+	kind?: PostKind;
 	publishedAt?: string | null;
 	updatedAt?: string;
 	authors?: Author[];
